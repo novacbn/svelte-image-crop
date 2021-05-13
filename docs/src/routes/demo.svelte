@@ -49,6 +49,13 @@
 </script>
 
 {#if browser}
+    <h2>Controls</h2>
+
+    <ul>
+        <li><code>mouse drag</code> / <code>touch drag</code> — Creates a crop selection</li>
+        <li><code>mouse click</code> / <code>touch tap</code> — Resets crop selection</li>
+    </ul>
+
     <ImageCrop bind:this={image_crop} {src} on:state={on_state} />
 
     <div class="grouped gapless">

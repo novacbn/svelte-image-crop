@@ -8,6 +8,11 @@ Simple click'n'drag Image Cropping using Web APIs
 
 See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.io/svelte-image-crop/demo)
 
+## Controls
+
+-   `mouse drag` / `touch drag` — Creates a crop selection
+-   `mouse click` / `touch tap` — Resets crop selection
+
 ## Usage
 
 ```html
@@ -93,11 +98,6 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
     commit
 </button>
 ```
-
-## Controls
-
--   `mouse drag` / `touch drag` — Creates a crop selection
--   `mouse click` / `touch tap` — Resets crop selection
 
 ## Developer
 
