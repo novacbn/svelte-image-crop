@@ -11,6 +11,7 @@
     import {CROP_STATE, ImageCrop} from "@novacbn/svelte-image-crop";
 
     import CSSVariableInput from "../components/CSSVariableInput.svelte";
+    import {is_supported} from "../util/features";
 
     let blob;
     let image_crop;
@@ -47,78 +48,84 @@
 </script>
 
 {#if browser}
-    <h2>Controls</h2>
+    {#if is_supported()}
+        <h2>Controls</h2>
 
-    <ul>
-        <li><code>mouse drag</code> / <code>touch drag</code> — Creates a crop selection</li>
-        <li><code>mouse click</code> / <code>touch tap</code> — Resets crop selection</li>
-    </ul>
+        <ul>
+            <li><code>mouse drag</code> / <code>touch drag</code> — Creates a crop selection</li>
+            <li><code>mouse click</code> / <code>touch tap</code> — Resets crop selection</li>
+        </ul>
 
-    <ImageCrop bind:this={image_crop} {src} on:state={on_state} />
+        <ImageCrop bind:this={image_crop} {src} on:state={on_state} />
 
-    <div class="grouped gapless">
-        <button
-            class="button secondary is-full-width"
-            disabled={src === DEFAULT_IMAGE_SRC}
-            on:click={on_reset_click}
-        >
-            reset
-        </button>
+        <div class="grouped gapless">
+            <button
+                class="button secondary is-full-width"
+                disabled={src === DEFAULT_IMAGE_SRC}
+                on:click={on_reset_click}
+            >
+                reset
+            </button>
 
-        <button
-            class="button error is-full-width"
-            disabled={state === CROP_STATE.default}
-            on:click={on_clear_click}
-        >
-            clear
-        </button>
+            <button
+                class="button error is-full-width"
+                disabled={state === CROP_STATE.default}
+                on:click={on_clear_click}
+            >
+                clear
+            </button>
 
-        <button
-            class="button primary is-full-width"
-            disabled={state === CROP_STATE.default}
-            on:click={on_commit_click}
-        >
-            commit
-        </button>
-    </div>
+            <button
+                class="button primary is-full-width"
+                disabled={state === CROP_STATE.default}
+                on:click={on_commit_click}
+            >
+                commit
+            </button>
+        </div>
 
-    <br />
+        <br />
 
-    <fieldset>
-        <legend>Customize</legend>
+        <fieldset>
+            <legend>Customize</legend>
 
-        <p>
-            <CSSVariableInput variable="--image-crop-cursor-dragging" default="crosshair" />
-            <CSSVariableInput variable="--image-crop-cursor-hover" default="se-resize" />
+            <p>
+                <CSSVariableInput variable="--image-crop-cursor-dragging" default="crosshair" />
+                <CSSVariableInput variable="--image-crop-cursor-hover" default="se-resize" />
 
-            <br />
+                <br />
 
-            <CSSVariableInput
-                variable="--image-crop-background-filter-cropping"
-                default="blur(1px) brightness(65%)"
-            />
+                <CSSVariableInput
+                    variable="--image-crop-background-filter-cropping"
+                    default="blur(1px) brightness(65%)"
+                />
 
-            <br />
+                <br />
 
-            <CSSVariableInput
-                variable="--image-crop-selection-border"
-                default="4px dashed whitesmoke"
-            />
-            <CSSVariableInput variable="--image-crop-selection-color" default="whitesmoke" />
-            <CSSVariableInput
-                variable="--image-crop-selection-filter"
-                default="drop-shadow(0px 0px 6px black)"
-            />
+                <CSSVariableInput
+                    variable="--image-crop-selection-border"
+                    default="4px dashed whitesmoke"
+                />
+                <CSSVariableInput variable="--image-crop-selection-color" default="whitesmoke" />
+                <CSSVariableInput
+                    variable="--image-crop-selection-filter"
+                    default="drop-shadow(0px 0px 6px black)"
+                />
 
-            <br />
+                <br />
 
-            <CSSVariableInput variable="--image-crop-selection-font-family" default="inherit" />
-            <CSSVariableInput variable="--image-crop-selection-font-size" default="1rem" />
-            <CSSVariableInput variable="--image-crop-selection-font-weight" default="900" />
-        </p>
-    </fieldset>
+                <CSSVariableInput variable="--image-crop-selection-font-family" default="inherit" />
+                <CSSVariableInput variable="--image-crop-selection-font-size" default="1rem" />
+                <CSSVariableInput variable="--image-crop-selection-font-weight" default="900" />
+            </p>
+        </fieldset>
 
-    <br />
+        <br />
+    {:else}
+        <div class="card">
+            <p>Your does not support the Web APIs needed to support in-Browser image cropping.</p>
+        </div>
+    {/if}
 {:else}
     <div class="card">
         <p>Your client currently does not support Javascript, or is otherwise disabled.</p>

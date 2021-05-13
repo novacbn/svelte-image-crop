@@ -13,6 +13,13 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
 -   `mouse drag` / `touch drag` — Creates a crop selection
 -   `mouse click` / `touch tap` — Resets crop selection
 
+## Browser Support
+
+-   Chrome 56+ — Jan 2017
+-   Edge 79+ — Jan 2020
+-   Firefox 46+ — April 2016
+-   Safari **UNSUPPORTED** — Requires [createImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap) and [canvas.getContext("bitmaprenderer")](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
+
 ## Usage
 
 ```html
