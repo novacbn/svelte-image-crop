@@ -1,12 +1,8 @@
 <script context="module">
-    import {dev} from "$app/env";
-    import {assets} from "$app/paths";
+    import {DATA_URI} from "../image";
 
-    // HACK: SvelteKit's base URL handling is really weird. Somethings it handles
-    // fully, but for SSR / server assets it doesn't...?
-    const DEFAULT_IMAGE_SRC = dev
-        ? "/assets/images/jung-ho-park-sYiKL1JEOEk-unsplash.jpg"
-        : `${assets}/assets/images/jung-ho-park-sYiKL1JEOEk-unsplash.jpg`;
+    // NOTE: Using data URI for better offline support
+    const DEFAULT_IMAGE_SRC = DATA_URI;
 
 </script>
 
@@ -28,6 +24,8 @@
 
     async function on_commit_click(event) {
         blob = await image_crop.get_cropped_blob();
+
+        if (src !== DEFAULT_IMAGE_SRC) URL.revokeObjectURL(src);
         src = URL.createObjectURL(blob);
 
         image_crop.reset();

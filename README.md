@@ -42,7 +42,13 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
         // Using our `ImageCrop` Component binding, we can access its `get_cropped_blob`. And use
         // that to cache the current crop selection as a new `Blob` with image data. Then tell the
         // Browser to create a disposable URL pointing to the blob to display
+        //
+        // And if the currently loaded image doesn't match our default, we need to destroy the
+        // disposable URL to prevent memory leaks
+
         blob = await image_crop.get_cropped_blob();
+
+        if (src !== DEFAULT_IMAGE_SRC) URL.revokeObjectURL(src);
         src = URL.createObjectURL(blob);
 
         image_crop.reset();
@@ -55,9 +61,7 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
     }
 
     function on_reset_click(event) {
-        // Finally we can reset everything to defaults to start over with the original image. And
-        // if the currently loaded image doesn't match our default, we need to destroy the disposable
-        // URL to prevent memory leaks
+        // Finally we can reset everything to defaults to start over with the original image.
         if (src !== DEFAULT_IMAGE_SRC) URL.revokeObjectURL(src);
 
         blob = null;
