@@ -12,7 +12,7 @@ export function to_blob(bitmap, mimetype, quality = 1) {
 
         if (!context) {
             reject(
-                new Error("bad dispatch to 'to_blob' (context of 'bitmaprendered' unretrievable)")
+                new Error("bad dispatch to 'to_blob' (context of 'bitmaprenderer' unavailable)")
             );
 
             return;
