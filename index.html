@@ -11,16 +11,16 @@
 
 		
 
-		<link rel="modulepreload" href="/svelte-image-crop/_app/start-a13afa1b.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/start-2fcc181e.js">
 		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/vendor-503fed67.js">
 		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/paths-2c73d5fe.js">
 		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/__layout.svelte-01d7002a.js">
-		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/index.svelte-bc70da1c.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/index.svelte-14cec1fc.js">
 		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/start-a8cd1609.css">
 		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/pages/__layout.svelte-a8cdc878.css">
 
 		<script type="module">
-			import { start } from "/svelte-image-crop/_app/start-a13afa1b.js";
+			import { start } from "/svelte-image-crop/_app/start-2fcc181e.js";
 			start({
 				target: document.querySelector("body"),
 				paths: {"base":"/svelte-image-crop","assets":"/svelte-image-crop"},
@@ -34,7 +34,7 @@
 					error: null,
 					nodes: [
 						import("/svelte-image-crop/_app/pages/__layout.svelte-01d7002a.js"),
-						import("/svelte-image-crop/_app/pages/index.svelte-bc70da1c.js")
+						import("/svelte-image-crop/_app/pages/index.svelte-14cec1fc.js")
 					],
 					page: {
 						host: location.host, // TODO this is redundant
@@ -68,6 +68,11 @@
 <p>Simple click'n'drag Image Cropping using Web APIs</p>
 <h2>Demo</h2>
 <p>See a demo at <a href="https://novacbn.github.io/svelte-image-crop/demo">novacbn.github.io/svelte-image-crop/demo</a></p>
+<h2>Controls</h2>
+<ul>
+<li><code>mouse drag</code> / <code>touch drag</code> — Creates a crop selection</li>
+<li><code>mouse click</code> / <code>touch tap</code> — Resets crop selection</li>
+</ul>
 <h2>Usage</h2>
 <pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">context</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
     <span class="token comment">// Here we're setting a default image path that we can let the end-user start with</span>
@@ -151,11 +156,6 @@
     commit
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
 </code></pre>
-<h2>Controls</h2>
-<ul>
-<li><code>mouse drag</code> / <code>touch drag</code> — Creates a crop selection</li>
-<li><code>mouse click</code> / <code>touch tap</code> — Resets crop selection</li>
-</ul>
 <h2>Developer</h2>
 <h3>Installation</h3>
 <p>Open your terminal and install via <code>npm</code>:</p>
