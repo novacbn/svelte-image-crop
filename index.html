@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+        <link rel="icon" href="/favicon.ico" />
+
+        
+
+		
+
+		<link rel="modulepreload" href="/svelte-image-crop/_app/start-a13afa1b.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/vendor-503fed67.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/paths-2c73d5fe.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/__layout.svelte-01d7002a.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/index.svelte-bc70da1c.js">
+		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/start-a8cd1609.css">
+		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/pages/__layout.svelte-a8cdc878.css">
+
+		<script type="module">
+			import { start } from "/svelte-image-crop/_app/start-a13afa1b.js";
+			start({
+				target: document.querySelector("body"),
+				paths: {"base":"/svelte-image-crop","assets":"/svelte-image-crop"},
+				session: {},
+				host: location.host,
+				route: true,
+				spa: false,
+				trailing_slash: "never",
+				hydrate: {
+					status: 200,
+					error: null,
+					nodes: [
+						import("/svelte-image-crop/_app/pages/__layout.svelte-01d7002a.js"),
+						import("/svelte-image-crop/_app/pages/index.svelte-bc70da1c.js")
+					],
+					page: {
+						host: location.host, // TODO this is redundant
+						path: "/",
+						query: new URLSearchParams(""),
+						params: {}
+					}
+				}
+			});
+		</script>
+
+        <title>@novacbn/svelte-image-crop</title>
+    </head>
+
+    <body>
+        
+
+
+<nav class="nav"><div class="nav-left"><a href="/svelte-image-crop/" class="active">README</a>
+        <a href="/svelte-image-crop/demo">Demo</a></div>
+
+    <div class="nav-center"><a class="brand" href="/svelte-image-crop/"><code>@novacbn/svelte-image-crop</code></a></div>
+
+    <div class="nav-right"><a href="https://github.com/novacbn/svelte-image-crop" target="_blank" rel="noopener noreferrer">GitHub
+        </a></div></nav>
+
+<hr>
+
+<div class="container"><h1><code>svelte-image-crop</code></h1>
+<h2>Description</h2>
+<p>Simple click'n'drag Image Cropping using Web APIs</p>
+<h2>Demo</h2>
+<p>See a demo at <a href="https://novacbn.github.io/svelte-image-crop/demo">novacbn.github.io/svelte-image-crop/demo</a></p>
+<h2>Usage</h2>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">context</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+    <span class="token comment">// Here we're setting a default image path that we can let the end-user start with</span>
+    <span class="token keyword">const</span> <span class="token constant">DEFAULT_IMAGE_SRC</span> <span class="token operator">=</span> <span class="token string">"/assets/images/jung-ho-park-sYiKL1JEOEk-unsplash.jpg"</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+    <span class="token keyword">import</span> <span class="token punctuation">{</span><span class="token constant">CROP_STATE</span><span class="token punctuation">,</span> ImageCrop<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@novacbn/svelte-image-crop"</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// `blob` — will carry the current instance of our starting image, with every committed crop</span>
+    <span class="token comment">// `image_crop` — will be our binding to the current `ImageCrop` Component instance</span>
+    <span class="token keyword">let</span> blob<span class="token punctuation">;</span>
+    <span class="token keyword">let</span> image_crop<span class="token punctuation">;</span>
+
+    <span class="token comment">// `src` — needs to start with our default image path, later we use it as comparison to</span>
+    <span class="token comment">// control allowing the end-user to reset all their committed crops</span>
+    <span class="token comment">//</span>
+    <span class="token comment">// `state` — we can't directly modify the internal `ImageCrop` state, but we can recieve</span>
+    <span class="token comment">// its current state via eventing to control allowing the end-user to reset their</span>
+    <span class="token comment">// current crop selection / commit the current selection</span>
+    <span class="token keyword">let</span> src <span class="token operator">=</span> <span class="token constant">DEFAULT_IMAGE_SRC</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> state <span class="token operator">=</span> <span class="token constant">CROP_STATE</span><span class="token punctuation">.</span>default<span class="token punctuation">;</span>
+
+    <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">on_commit_click</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Using our `ImageCrop` Component binding, we can access its `get_cropped_blob`. And use</span>
+        <span class="token comment">// that to cache the current crop selection as a new `Blob` with image data. Then tell the</span>
+        <span class="token comment">// Browser to create a disposable URL pointing to the blob to display</span>
+        blob <span class="token operator">=</span> <span class="token keyword">await</span> image_crop<span class="token punctuation">.</span><span class="token function">get_cropped_blob</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        src <span class="token operator">=</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        image_crop<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">function</span> <span class="token function">on_clear_click</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Next, we can use the `reset` method to remove the current crop selection</span>
+
+        image_crop<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">function</span> <span class="token function">on_reset_click</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Finally we can reset everything to defaults to start over with the original image. And</span>
+        <span class="token comment">// if the currently loaded image doesn't match our default, we need to destroy the disposable</span>
+        <span class="token comment">// URL to prevent memory leaks</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>src <span class="token operator">!==</span> <span class="token constant">DEFAULT_IMAGE_SRC</span><span class="token punctuation">)</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        blob <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        src <span class="token operator">=</span> <span class="token constant">DEFAULT_IMAGE_SRC</span><span class="token punctuation">;</span>
+
+        image_crop<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">function</span> <span class="token function">on_state</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// For disabling our controls, we need to locally cache any changes to the `ImageCrop`'s state</span>
+        state <span class="token operator">=</span> event<span class="token punctuation">.</span>detail<span class="token punctuation">.</span>state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&lt;!--
+    NOTE: We need to bind to the `ImageCrop` instance to access its methods
+--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ImageCrop</span> <span class="token attr-name"><span class="token namespace">bind:</span>this</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>{image_crop}</span> <span class="token attr-name">{src}</span> <span class="token attr-name"><span class="token namespace">on:</span>state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>{on_state}</span> <span class="token punctuation">/></span></span>
+
+&lt;button
+    disabled={src === DEFAULT_IMAGE_SRC}
+    on:click={on_reset_click}
+>
+    reset
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+
+&lt;button
+    disabled={state === CROP_STATE.default}
+    on:click={on_clear_click}
+>
+    clear
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+
+&lt;button
+    disabled={state === CROP_STATE.default}
+    on:click={on_commit_click}
+>
+    commit
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+</code></pre>
+<h2>Controls</h2>
+<ul>
+<li><code>mouse drag</code> / <code>touch drag</code> — Creates a crop selection</li>
+<li><code>mouse click</code> / <code>touch tap</code> — Resets crop selection</li>
+</ul>
+<h2>Developer</h2>
+<h3>Installation</h3>
+<p>Open your terminal and install via <code>npm</code>:</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> github:novacbn/svelte-image-crop<span class="token comment">#0.0.1</span>
+</code></pre>
+<p>Install current in-development code:</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> github:novacbn/svelte-image-crop
+</code></pre>
+<h3>Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Signature</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src: string</code></td>
+<td><code>&quot;&quot;</code></td>
+<td>Sets the image to be loaded into the crop editor</td>
+</tr>
+</tbody>
+</table>
+<h3>Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get_cropped_image(): Blob</code></td>
+<td>Returns a copy of the currently loaded image as a <code>Blob</code>, but cropped to current selection</td>
+</tr>
+<tr>
+<td><code>is_cropping(): boolean</code></td>
+<td>Returns if there is an active crop selection</td>
+</tr>
+<tr>
+<td><code>reset(): void</code></td>
+<td>Removes the the currently active crop selection</td>
+</tr>
+</tbody>
+</table>
+<h3>Events</h3>
+<table>
+<thead>
+<tr>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>state: CustomEvent&lt;{state: CROP_STATE}&gt;</code></td>
+<td>Dispatches whenever the current crop editor state changes</td>
+</tr>
+</tbody>
+</table>
+<h3>CSS Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--image-crop-cursor-dragging</code></td>
+<td><code>crosshair</code></td>
+<td>Represents the cursor used when the end-user is currently performing selection drag</td>
+</tr>
+<tr>
+<td><code>--image-crop-cursor-hover</code></td>
+<td><code>se-resize</code></td>
+<td>Represents the cursor used when the end-user is hovering with no drag</td>
+</tr>
+<tr>
+<td><code>--image-crop-background-filter-cropping</code></td>
+<td><code>blur(1px) brightness(65%)</code></td>
+<td>Represents the filter used on the background image when there is a crop selection</td>
+</tr>
+<tr>
+<td><code>--image-crop-selection-border</code></td>
+<td><code>6px dashed whitesmoke</code></td>
+<td>Represents the border used on the visualization of the current crop selection</td>
+</tr>
+<tr>
+<td><code>--image-crop-selection-color</code></td>
+<td><code>whitesmoke</code></td>
+<td>Represents the color used on the visualization of the current crop selection</td>
+</tr>
+<tr>
+<td><code>--image-crop-selection-filter</code></td>
+<td><code>drop-shadow(0px 0px 6px black)</code></td>
+<td>Represents the filter used on the visualization of the current crop selection</td>
+</tr>
+<tr>
+<td><code>--image-crop-selection-font-family</code></td>
+<td><code>inherit</code></td>
+<td>Represents the font family used on the visualization of the current crop selection</td>
+</tr>
+<tr>
+<td><code>--image-crop-selection-font-size</code></td>
+<td><code>1rem</code></td>
+<td>Represents the font size used on the visualization of the current crop selection</td>
+</tr>
+<tr>
+<td><code>--image-crop-selection-font-weight</code></td>
+<td><code>900</code></td>
+<td>Represents the font weight used on the visualization of the current crop selection</td>
+</tr>
+</tbody>
+</table>
+<h3>API</h3>
+<ul>
+<li>
+<p>Constants</p>
+<ul>
+<li><code>CROP_STATES</code></li>
+</ul>
+</li>
+<li>
+<p>Components</p>
+<ul>
+<li><code>ImageCrop</code></li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+
+	
+
+    </body>
+</html>
