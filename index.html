@@ -11,16 +11,16 @@
 
 		
 
-		<link rel="modulepreload" href="/svelte-image-crop/_app/start-2fcc181e.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/start-107afa22.js">
 		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/vendor-503fed67.js">
-		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/paths-2c73d5fe.js">
-		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/__layout.svelte-01d7002a.js">
-		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/index.svelte-14cec1fc.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/paths-45dac81d.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/__layout.svelte-4ccb3778.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/index.svelte-9ffa89ef.js">
 		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/start-a8cd1609.css">
 		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/pages/__layout.svelte-a8cdc878.css">
 
 		<script type="module">
-			import { start } from "/svelte-image-crop/_app/start-2fcc181e.js";
+			import { start } from "/svelte-image-crop/_app/start-107afa22.js";
 			start({
 				target: document.querySelector("body"),
 				paths: {"base":"/svelte-image-crop","assets":"/svelte-image-crop"},
@@ -33,8 +33,8 @@
 					status: 200,
 					error: null,
 					nodes: [
-						import("/svelte-image-crop/_app/pages/__layout.svelte-01d7002a.js"),
-						import("/svelte-image-crop/_app/pages/index.svelte-14cec1fc.js")
+						import("/svelte-image-crop/_app/pages/__layout.svelte-4ccb3778.js"),
+						import("/svelte-image-crop/_app/pages/index.svelte-9ffa89ef.js")
 					],
 					page: {
 						host: location.host, // TODO this is redundant
@@ -100,7 +100,13 @@
         <span class="token comment">// Using our `ImageCrop` Component binding, we can access its `get_cropped_blob`. And use</span>
         <span class="token comment">// that to cache the current crop selection as a new `Blob` with image data. Then tell the</span>
         <span class="token comment">// Browser to create a disposable URL pointing to the blob to display</span>
+        <span class="token comment">//</span>
+        <span class="token comment">// And if the currently loaded image doesn't match our default, we need to destroy the</span>
+        <span class="token comment">// disposable URL to prevent memory leaks</span>
+
         blob <span class="token operator">=</span> <span class="token keyword">await</span> image_crop<span class="token punctuation">.</span><span class="token function">get_cropped_blob</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>src <span class="token operator">!==</span> <span class="token constant">DEFAULT_IMAGE_SRC</span><span class="token punctuation">)</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">;</span>
         src <span class="token operator">=</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         image_crop<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -113,9 +119,7 @@
     <span class="token punctuation">}</span>
 
     <span class="token keyword">function</span> <span class="token function">on_reset_click</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment">// Finally we can reset everything to defaults to start over with the original image. And</span>
-        <span class="token comment">// if the currently loaded image doesn't match our default, we need to destroy the disposable</span>
-        <span class="token comment">// URL to prevent memory leaks</span>
+        <span class="token comment">// Finally we can reset everything to defaults to start over with the original image.</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>src <span class="token operator">!==</span> <span class="token constant">DEFAULT_IMAGE_SRC</span><span class="token punctuation">)</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         blob <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
