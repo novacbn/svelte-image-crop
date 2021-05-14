@@ -4,6 +4,8 @@
 
 Simple click'n'drag Image Cropping using Web APIs
 
+https://user-images.githubusercontent.com/31122674/118294482-c0f94880-b4a8-11eb-9c03-03c5dfc802b1.mp4
+
 ## Demo
 
 See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.io/svelte-image-crop/demo)
