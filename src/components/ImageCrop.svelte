@@ -127,6 +127,16 @@
     }
 
     /**
+     * Returns the current crop selection bounds relative to the image dimensions
+     *
+     * @returns {import("../util/math").IBounds | null}
+     */
+    export function get_cropped_bounds() {
+        // NOTE: Need to clone to prevent mutation to internal state
+        return _image_bounds ? {..._image_bounds} : null;
+    }
+
+    /**
      * Returns if there is an active crop selection
      *
      * @returns {boolean}

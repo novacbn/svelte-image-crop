@@ -20,7 +20,7 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
 -   Chrome 56+ — Jan 2017
 -   Edge 79+ — Jan 2020
 -   Firefox 46+ — April 2016
--   Safari **UNSUPPORTED** — Requires [createImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap) and [canvas.getContext("bitmaprenderer")](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
+-   Safari **UNSUPPORTED** — Requires [`createImageBitmap`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap) and [`canvas.getContext("bitmaprenderer")`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
 
 ## Usage
 
@@ -112,6 +112,12 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
 </button>
 ```
 
+## FAQ
+
+### Can the Package Be Used on Unsupported Browsers?
+
+Yes! The Browser support is only for calling [`get_cropped_image`](#methods) for performing cropping via Web APIs. However you can call [`get_cropped_bounds`](#methods) to get the starting `x` and `y` coordinates along with the `width` and `height` relative to the image's actual _(not Browser element)_ dimensions. Which you can manually pass into some other package that handles manipulating image data or send to a server backend.
+
 ## Developer
 
 ### Installation
@@ -119,7 +125,7 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
 Open your terminal and install via `npm`:
 
 ```bash
-npm install github:novacbn/svelte-image-crop#0.0.1
+npm install github:novacbn/svelte-image-crop#0.0.2
 ```
 
 Install current in-development code:
@@ -136,17 +142,24 @@ npm install github:novacbn/svelte-image-crop
 
 ### Methods
 
-| Signature                   | Description                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------------ |
-| `get_cropped_image(): Blob` | Returns a copy of the currently loaded image as a `Blob`, but cropped to current selection |
-| `is_cropping(): boolean`    | Returns if there is an active crop selection                                               |
-| `reset(): void`             | Removes the the currently active crop selection                                            |
+| Signature                               | Description                                                                                |
+| --------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `get_cropped_bounds(): IBounds OR null` | Returns the current crop selection bounds relative to the actual image dimensions          |
+| `get_cropped_image(): Blob`             | Returns a copy of the currently loaded image as a `Blob`, but cropped to current selection |
+| `is_cropping(): boolean`                | Returns if there is an active crop selection                                               |
+| `reset(): void`                         | Removes the the currently active crop selection                                            |
 
 ### Events
 
 | Signature                                 | Description                                               |
 | ----------------------------------------- | --------------------------------------------------------- |
 | `state: CustomEvent<{state: CROP_STATE}>` | Dispatches whenever the current crop editor state changes |
+
+### Types
+
+| Signature                                                           | Description                                      |
+| ------------------------------------------------------------------- | ------------------------------------------------ |
+| `IBounds: { x: number; y: number; width: number; height: number; }` | Represents a set of boundaries within a 2D plane |
 
 ### CSS Variables
 
