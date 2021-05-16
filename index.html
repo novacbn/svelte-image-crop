@@ -11,16 +11,16 @@
 
 		
 
-		<link rel="modulepreload" href="/svelte-image-crop/_app/start-5dc8b62d.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/start-506a07e5.js">
 		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/vendor-503fed67.js">
 		<link rel="modulepreload" href="/svelte-image-crop/_app/chunks/paths-45dac81d.js">
 		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/__layout.svelte-4ccb3778.js">
-		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/index.svelte-c9678308.js">
+		<link rel="modulepreload" href="/svelte-image-crop/_app/pages/index.svelte-5e983a2e.js">
 		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/start-a8cd1609.css">
 		<link rel="stylesheet" href="/svelte-image-crop/_app/assets/pages/__layout.svelte-a8cdc878.css">
 
 		<script type="module">
-			import { start } from "/svelte-image-crop/_app/start-5dc8b62d.js";
+			import { start } from "/svelte-image-crop/_app/start-506a07e5.js";
 			start({
 				target: document.querySelector("body"),
 				paths: {"base":"/svelte-image-crop","assets":"/svelte-image-crop"},
@@ -34,7 +34,7 @@
 					error: null,
 					nodes: [
 						import("/svelte-image-crop/_app/pages/__layout.svelte-4ccb3778.js"),
-						import("/svelte-image-crop/_app/pages/index.svelte-c9678308.js")
+						import("/svelte-image-crop/_app/pages/index.svelte-5e983a2e.js")
 					],
 					page: {
 						host: location.host, // TODO this is redundant
@@ -66,6 +66,9 @@
 <div class="container"><h1><code>svelte-image-crop</code></h1>
 <h2>Description</h2>
 <p>Simple click'n'drag Image Cropping using Web APIs</p>
+<video controls height="360">
+    <source src="https://user-images.githubusercontent.com/31122674/118294482-c0f94880-b4a8-11eb-9c03-03c5dfc802b1.mp4" type="video/mp4">
+</video>
 <h2>Demo</h2>
 <p>See a demo at <a href="https://novacbn.github.io/svelte-image-crop/demo">novacbn.github.io/svelte-image-crop/demo</a></p>
 <h2>Controls</h2>
@@ -78,7 +81,7 @@
 <li>Chrome 56+ — Jan 2017</li>
 <li>Edge 79+ — Jan 2020</li>
 <li>Firefox 46+ — April 2016</li>
-<li>Safari <strong>UNSUPPORTED</strong> — Requires <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap">createImageBitmap</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext">canvas.getContext(&quot;bitmaprenderer&quot;)</a></li>
+<li>Safari <strong>UNSUPPORTED</strong> — Requires <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap"><code>createImageBitmap</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext"><code>canvas.getContext(&quot;bitmaprenderer&quot;)</code></a></li>
 </ul>
 <h2>Usage</h2>
 <pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">context</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
@@ -167,10 +170,13 @@
     commit
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
 </code></pre>
+<h2>FAQ</h2>
+<h3>Can the Package Be Used on Unsupported Browsers?</h3>
+<p>Yes! The Browser support is only for calling <a href="#methods"><code>get_cropped_image</code></a> for performing cropping via Web APIs. However you can call <a href="#methods"><code>get_cropped_bounds</code></a> to get the starting <code>x</code> and <code>y</code> coordinates along with the <code>width</code> and <code>height</code> relative to the image's actual <em>(not Browser element)</em> dimensions. Which you can manually pass into some other package that handles manipulating image data or send to a server backend.</p>
 <h2>Developer</h2>
 <h3>Installation</h3>
 <p>Open your terminal and install via <code>npm</code>:</p>
-<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> github:novacbn/svelte-image-crop<span class="token comment">#0.0.1</span>
+<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> github:novacbn/svelte-image-crop<span class="token comment">#0.0.2</span>
 </code></pre>
 <p>Install current in-development code:</p>
 <pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> github:novacbn/svelte-image-crop
@@ -202,6 +208,10 @@
 </thead>
 <tbody>
 <tr>
+<td><code>get_cropped_bounds(): IBounds OR null</code></td>
+<td>Returns the current crop selection bounds relative to the actual image dimensions</td>
+</tr>
+<tr>
 <td><code>get_cropped_image(): Blob</code></td>
 <td>Returns a copy of the currently loaded image as a <code>Blob</code>, but cropped to current selection</td>
 </tr>
@@ -227,6 +237,21 @@
 <tr>
 <td><code>state: CustomEvent&lt;{state: CROP_STATE}&gt;</code></td>
 <td>Dispatches whenever the current crop editor state changes</td>
+</tr>
+</tbody>
+</table>
+<h3>Types</h3>
+<table>
+<thead>
+<tr>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IBounds: { x: number; y: number; width: number; height: number; }</code></td>
+<td>Represents a set of boundaries within a 2D plane</td>
 </tr>
 </tbody>
 </table>
