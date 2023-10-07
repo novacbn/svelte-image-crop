@@ -136,10 +136,10 @@ npm install github:novacbn/svelte-image-crop
 
 ### Properties
 
-| Signature               | Default | Description                                                  |
-| ----------------------- | ------- | ------------------------------------------------------------ |
-| `src: string`           | `""`    | Sets the image to be loaded into the crop editor             |
-| `ratio: boolean|number` | `false` | Aspect of the cropping area. The value is the ratio between its width and its height. The default value is `false`, that means by default, no ratio is used. Examples for ratios:  `(9/16)`, `(3/4)` |
+| Signature                 | Default | Description                                                  |
+| ------------------------- | ------- | ------------------------------------------------------------ |
+| `src: string`             | `""`    | Sets the image to be loaded into the crop editor             |
+| `ratio: boolean ∨ number` | `false` | Aspect of the cropping area. The value is the ratio between its width and its height. The default value is `false`, that means by default, no ratio is used. Examples for ratios:  `(9/16)`, `(3/4)` |
 
 ### Methods
 
