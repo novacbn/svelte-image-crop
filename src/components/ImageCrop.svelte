@@ -91,6 +91,7 @@
      * @type {string}
      */
     export let src;
+    export let ratio = false;
 
     function on_end() {
         is_dragging = false;
@@ -157,7 +158,7 @@
     let _rect;
     $: {
         const old_rect = _rect;
-        _rect = _is_cropping ? get_rect(position_start, position_end) : null;
+        _rect = _is_cropping ? get_rect(position_start, position_end, ratio) : null;
 
         if (
             typeof old_rect !== typeof _rect ||
@@ -187,10 +188,9 @@
                 height: image_element.naturalHeight,
             };
 
-            _image_bounds = get_bounds(
-                get_relative_point(from, to, position_start),
-                get_relative_point(from, to, position_end)
-            );
+            let _rect_relative = get_rect(get_relative_point(from, to, position_start), get_relative_point(from, to, position_end), ratio)
+            _image_bounds = get_bounds(_rect_relative);
+
         } else _image_bounds = null;
     }
 
@@ -224,10 +224,10 @@
 </script>
 
 <div
-    class="image-crop"
-    data-cropping={_is_cropping ? true : undefined}
-    data-dragging={is_dragging ? true : undefined}
-    style={_max_height}
+        class="image-crop"
+        data-cropping={_is_cropping ? true : undefined}
+        data-dragging={is_dragging ? true : undefined}
+        style={_max_height}
 >
     <img bind:this={image_element} class="image-crop-background" {src} />
 

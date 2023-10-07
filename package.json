@@ -2,7 +2,7 @@
     "name": "@novacbn/svelte-image-crop",
     "description": "Simple click'n'drag Image Cropping using Web APIs",
     "author": "novacbn",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "keywords": [
         "image-crop",
         "svelte",
