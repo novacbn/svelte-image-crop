@@ -88,7 +88,7 @@ See a demo at [novacbn.github.io/svelte-image-crop/demo](https://novacbn.github.
 <!--
     NOTE: We need to bind to the `ImageCrop` instance to access its methods
 -->
-<ImageCrop bind:this={image_crop} {src} on:state={on_state} />
+<ImageCrop bind:this={image_crop} {src} on:state={on_state} ratio={false} />
 
 <button
     disabled={src === DEFAULT_IMAGE_SRC}
@@ -136,9 +136,10 @@ npm install github:novacbn/svelte-image-crop
 
 ### Properties
 
-| Signature     | Default | Description                                      |
-| ------------- | ------- | ------------------------------------------------ |
-| `src: string` | `""`    | Sets the image to be loaded into the crop editor |
+| Signature               | Default | Description                                                  |
+| ----------------------- | ------- | ------------------------------------------------------------ |
+| `src: string`           | `""`    | Sets the image to be loaded into the crop editor             |
+| `ratio: boolean|number` | `false` | Aspect of the cropping area. The value is the ratio between its width and its height. The default value is `false`, that means by default, no ratio is used. Examples for ratios:  `(9/16)`, `(3/4)` |
 
 ### Methods
 

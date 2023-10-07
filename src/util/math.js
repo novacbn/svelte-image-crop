@@ -29,16 +29,14 @@
  * @property {number} right
  * @property {number} top
  */
-
 /**
- * Returns the bounding box of two points or a rectangle in 2D space 
- * 
- * @param {IPoint | IRect} rect 
- * @param {IPoint} [end] 
+ * Returns the bounding box of two points or a rectangle in 2D space
+ *
+ * @param {IPoint | IRect} rect
  * @returns {IBounds}
  */
-export function get_bounds(rect, end) {
-    const {left, right, top, bottom} = end ? get_rect(rect, end) : (rect);
+export function get_bounds(rect) {
+    const {left, right, top, bottom} = (rect);
 
     return {
         x: left,
@@ -50,19 +48,32 @@ export function get_bounds(rect, end) {
 }
 
 /**
- * Returns the rectangle corners of two points in 2D space
- * 
+ * Returns the rectangle corners of two points in 2D space, optionally applying a ratio
+ *
  * @param {IPoint} start
  * @param {IPoint} end
+ * @param {number} ratio - The ratio of the cropped area, will be only applied if the ratio is not false
  * @returns {IRect}
  */
-export function get_rect(start, end) {
+export function get_rect(start, end, ratio) {
     const {x: start_x, y: start_y} = start;
     const {x: end_x, y: end_y} = end;
 
+    let left, right;
+    if (ratio) {
+        let height = Math.max(start_y, end_y) - Math.min(start_y, end_y)
+        let width = ratio * height
+
+        left = (start_x < end_x) ? start_x : start_x - width;
+        right = left + width;
+    } else {
+        left = Math.min(start_x, end_x);
+        right = Math.max(start_x, end_x)
+    }
+
     return {
-        left: Math.min(start_x, end_x),
-        right: Math.max(start_x, end_x),
+        left: left,
+        right: right,
 
         top: Math.min(start_y, end_y),
         bottom: Math.max(start_y, end_y),
@@ -71,7 +82,7 @@ export function get_rect(start, end) {
 
 /**
  * Returns and translates a point from one pair dimensions to another pair in 2D space
- * 
+ *
  * @param {IDimensions} from
  * @param {IDimensions} to
  * @param {IPoint} point
